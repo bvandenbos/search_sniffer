@@ -66,10 +66,12 @@ module Squeejee  #:nodoc:
                     pieces = arg.split('=')
                     if pieces.length == 2 && pieces.first == query_param_name
                       unstopped_keywords = CGI.unescape(pieces.last)
-                      @raw = unstopped_keywords
-                      @search_terms = unstopped_keywords.gsub(@stop_words, '').squeeze(' ')
-                      #logger.info("Referring Search Keywords: #{search_terms}")
-                      return true
+                      unless unstopped_keywords.is_binary_data?
+                        @raw = unstopped_keywords
+                        @search_terms = unstopped_keywords.gsub(@stop_words, '').squeeze(' ')
+                        #logger.info("Referring Search Keywords: #{search_terms}")
+                        return true
+                      end
                     end
                   end
                 end # unless
